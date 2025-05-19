@@ -1,0 +1,23 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Java
+*.class
+
+# Maven
+target/
+*.log
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Sistema operativo
+Thumbs.db
+ehthumbs.db
+
+# Otros
+*.swp
