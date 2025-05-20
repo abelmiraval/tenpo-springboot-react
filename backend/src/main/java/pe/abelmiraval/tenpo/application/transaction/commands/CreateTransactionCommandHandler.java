@@ -1,15 +1,15 @@
 package pe.abelmiraval.tenpo.application.transaction.commands;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pe.abelmiraval.tenpo.application.exceptions.BusinessException;
 import pe.abelmiraval.tenpo.domain.constants.Constants;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionQuery;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.entities.TransactionEntity;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionRepository;
-import pe.abelmiraval.tenpo.infraestructure.shared.mediator.Handler;
+import pe.abelmiraval.tenpo.infraestructure.shared.cqrs.command.CommandHandler;
 
-@Component
-public class CreateTransactionCommandHandler implements Handler<CreateTransactionCommand, Boolean> {
+@Service
+public class CreateTransactionCommandHandler implements CommandHandler<CreateTransactionCommand, Boolean> {
 
     private final TransactionQuery query;
     private final TransactionRepository repository;
@@ -22,17 +22,17 @@ public class CreateTransactionCommandHandler implements Handler<CreateTransactio
     @Override
     public Boolean handle(CreateTransactionCommand request) {
 
-        var count = query.countByUsername(request.username());
+        var count = query.countByUsername(request.getUsername());
 
         if (count >= Constants.MAX_TRANSACTION_COUNT) {
-            throw new BusinessException("amount","El Tenpista ya tiene el máximo de 100 transacciones.");
+            throw new BusinessException("amount", "El Tenpista ya tiene el máximo de 100 transacciones.");
         }
 
         var entity = new TransactionEntity(
-                request.amount(),
-                request.category(),
-                request.username(),
-                request.date()
+                request.getAmount(),
+                request.getCategory(),
+                request.getUsername(),
+                request.getDate()
         );
         repository.save(entity);
 

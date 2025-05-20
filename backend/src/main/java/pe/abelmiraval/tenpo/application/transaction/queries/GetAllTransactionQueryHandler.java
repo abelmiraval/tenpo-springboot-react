@@ -1,13 +1,13 @@
 package pe.abelmiraval.tenpo.application.transaction.queries;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pe.abelmiraval.tenpo.domain.repositories.ITransactionQuery;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionQuery;
-import pe.abelmiraval.tenpo.infraestructure.shared.mediator.Handler;
+import pe.abelmiraval.tenpo.infraestructure.shared.cqrs.query.QueryHandler;
 
 import java.util.List;
 
-@Component
+@Service
 public class GetAllTransactionQueryHandler implements QueryHandler<GetAllTransactionQuery, List<GetAllTransactionResponse>> {
 
     private final ITransactionQuery query;

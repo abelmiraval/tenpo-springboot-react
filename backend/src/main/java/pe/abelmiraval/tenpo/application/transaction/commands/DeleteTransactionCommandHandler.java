@@ -1,12 +1,12 @@
 package pe.abelmiraval.tenpo.application.transaction.commands;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionQuery;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionRepository;
-import pe.abelmiraval.tenpo.infraestructure.shared.mediator.Handler;
+import pe.abelmiraval.tenpo.infraestructure.shared.cqrs.command.CommandHandler;
 
-@Component
-public class DeleteTransactionCommandHandler implements Handler<DeleteTransactionCommand, Boolean> {
+@Service
+public class DeleteTransactionCommandHandler implements CommandHandler<DeleteTransactionCommand, Boolean> {
 
     private final TransactionQuery query;
     private final TransactionRepository repository;
@@ -19,7 +19,7 @@ public class DeleteTransactionCommandHandler implements Handler<DeleteTransactio
     @Override
     public Boolean handle(DeleteTransactionCommand request) {
 
-        var entity = query.getById(request.id());
+        var entity = query.getById(request.getId());
 
         if (entity.isEmpty()) {
             return false;

@@ -1,12 +1,12 @@
 package pe.abelmiraval.tenpo.application.transaction.commands;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionQuery;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionRepository;
-import pe.abelmiraval.tenpo.infraestructure.shared.mediator.Handler;
+import pe.abelmiraval.tenpo.infraestructure.shared.cqrs.command.CommandHandler;
 
-@Component
-public class UpdateTransactionCommandHandler implements Handler<UpdateTransactionCommand, Boolean> {
+@Service
+public class UpdateTransactionCommandHandler implements CommandHandler<UpdateTransactionCommand, Boolean> {
 
     private final TransactionQuery query;
     private final TransactionRepository repository;
@@ -18,16 +18,16 @@ public class UpdateTransactionCommandHandler implements Handler<UpdateTransactio
 
     @Override
     public Boolean handle(UpdateTransactionCommand request) {
-        var optional = query.getById(request.id());
+        var optional = query.getById(request.getId());
 
         if (optional.isEmpty()) {
             return false;
         }
 
         var transaction = optional.get();
-        transaction.setAmount(request.amount());
-        transaction.setCategory(request.category());
-        transaction.setUsername(request.username());
+        transaction.setAmount(request.getAmount());
+        transaction.setCategory(request.getCategory());
+        transaction.setUsername(request.getUsername());
 
         repository.update(transaction);
 
