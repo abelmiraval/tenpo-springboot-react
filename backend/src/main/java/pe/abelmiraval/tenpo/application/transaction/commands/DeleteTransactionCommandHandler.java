@@ -1,7 +1,5 @@
-package pe.abelmiraval.tenpo.application.transaction.commands.transaction;
+package pe.abelmiraval.tenpo.application.transaction.commands;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionQuery;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionRepository;
@@ -19,13 +17,18 @@ public class DeleteTransactionCommandHandler implements Handler<DeleteTransactio
     }
 
     @Override
-    public ResponseEntity<Boolean> handle(DeleteTransactionCommand request) {
+    public Boolean handle(DeleteTransactionCommand request) {
 
         var entity = query.getById(request.id());
 
-        repository.delete(entity);
+        if (entity.isEmpty()) {
+            return false;
+        }
 
-        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.NO_CONTENT);
+        var transaction = entity.get();
+        repository.delete(transaction);
+
+        return true;
     }
 
 }

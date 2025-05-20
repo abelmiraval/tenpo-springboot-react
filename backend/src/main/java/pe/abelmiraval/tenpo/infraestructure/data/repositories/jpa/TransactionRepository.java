@@ -2,6 +2,7 @@ package pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import pe.abelmiraval.tenpo.application.exceptions.DatabaseException;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.entities.TransactionEntity;
 import pe.abelmiraval.tenpo.domain.repositories.ITransactionRepository;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.interfaces.ITransactionJpaRepository;
@@ -22,7 +23,7 @@ public class TransactionRepository implements ITransactionRepository {
             repository.save(transaction);
             return 1;
         } catch (Exception e) {
-            return 0;
+            throw new DatabaseException(e.getMessage());
         }
     }
 
@@ -32,7 +33,7 @@ public class TransactionRepository implements ITransactionRepository {
             repository.save(transaction);
             return 1;
         }catch (Exception e) {
-            return 0;
+            throw new DatabaseException(e.getMessage());
         }
     }
 
@@ -43,7 +44,7 @@ public class TransactionRepository implements ITransactionRepository {
             repository.save(transaction);
             return 1;
         } catch (Exception e) {
-            return 0;
+            throw new DatabaseException(e.getMessage());
         }
     }
 

@@ -1,7 +1,5 @@
-package pe.abelmiraval.tenpo.application.transaction.commands.transaction;
+package pe.abelmiraval.tenpo.application.transaction.commands;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionQuery;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionRepository;
@@ -19,14 +17,20 @@ public class UpdateTransactionCommandHandler implements Handler<UpdateTransactio
     }
 
     @Override
-    public ResponseEntity<Boolean> handle(UpdateTransactionCommand request) {
-        var entity = query.getById(request.id());
-        entity.setAmount(request.amount());
-        entity.setCategory(request.category());
-        entity.setUsername(request.username());
+    public Boolean handle(UpdateTransactionCommand request) {
+        var optional = query.getById(request.id());
 
-        repository.update(entity);
+        if (optional.isEmpty()) {
+            return false;
+        }
 
-        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
+        var transaction = optional.get();
+        transaction.setAmount(request.amount());
+        transaction.setCategory(request.category());
+        transaction.setUsername(request.username());
+
+        repository.update(transaction);
+
+        return true;
     }
 }

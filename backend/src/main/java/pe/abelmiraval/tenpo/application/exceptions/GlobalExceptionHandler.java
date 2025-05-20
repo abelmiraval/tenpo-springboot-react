@@ -40,7 +40,6 @@ public class GlobalExceptionHandler {
                 .build();
 
         logger.info(LOG_DETAILS, methodArgumentNotValidException.getMessage());
-
         return baseResponse;
     }
 
@@ -68,9 +67,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({
             org.springframework.dao.DuplicateKeyException.class,
-            org.springframework.web.bind.support.WebExchangeBindException.class,
             org.springframework.http.converter.HttpMessageNotReadableException.class,
-            org.springframework.web.server.ServerWebInputException.class,
             org.springframework.web.bind.MissingServletRequestParameterException.class})
     @ResponseBody
     public BaseResponse<String> badRequestException(Exception badRequestException) {
@@ -89,7 +86,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({DatabaseException.class})
     @ResponseBody
     public BaseResponse<String> databaseException(DatabaseException databaseException) {
-
         logger.info("Error: DatabaseException: {}", databaseException.getMessage());
 
         BaseResponse<String> baseResponse = BaseResponse.<String>builder()
@@ -98,7 +94,6 @@ public class GlobalExceptionHandler {
                 .build();
 
         logger.info(LOG_DETAILS, baseResponse);
-
         return baseResponse;
     }
 
@@ -106,7 +101,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({BusinessException.class})
     @ResponseBody
     public BaseResponse<String> businessException(BusinessException businessException) {
-
         logger.info("Error: BaseException: {}", businessException.getMessage());
 
         List<FieldValidationError> fieldValidationErrorList = List.of(new FieldValidationError(businessException.getField(), businessException.getMessage()));
@@ -118,9 +112,7 @@ public class GlobalExceptionHandler {
                 .build();
 
         logger.info(LOG_DETAILS, baseResponse);
-
         return baseResponse;
     }
-
 
 }

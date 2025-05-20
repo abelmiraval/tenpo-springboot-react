@@ -1,4 +1,4 @@
-package pe.abelmiraval.tenpo.application.transaction.commands.transaction;
+package pe.abelmiraval.tenpo.application.transaction.commands;
 
 
 import jakarta.validation.constraints.Min;
@@ -12,4 +12,5 @@ public record CreateTransactionCommand(
         @NotBlank(message = "La categoría es obligatoria") String category,
         @NotBlank(message = "El usuario es obligatorio") String username,
         @PastOrPresent(message = "La fecha no puede ser futura") Date date
-) {}
+) {
+}
