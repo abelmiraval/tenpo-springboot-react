@@ -1,14 +1,11 @@
 package pe.abelmiraval.tenpo.domain.repositories;
 
-import pe.abelmiraval.tenpo.domain.entities.Transaction;
+import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.entities.TransactionEntity;
 
 public interface ITransactionRepository {
-    public int save(Transaction transaction);
+    int save(TransactionEntity transaction);
 
-    public int update(Transaction transaction);
+    int update(TransactionEntity transaction);
 
-    public int delete(Long id);
-
-    public Transaction findByUsername(String username);
-
+    int delete(TransactionEntity transaction);
 }
