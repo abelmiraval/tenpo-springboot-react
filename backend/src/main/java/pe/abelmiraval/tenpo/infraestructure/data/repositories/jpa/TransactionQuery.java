@@ -1,6 +1,7 @@
 package pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa;
 
 import org.springframework.stereotype.Service;
+import pe.abelmiraval.tenpo.application.exceptions.DatabaseException;
 import pe.abelmiraval.tenpo.domain.repositories.ITransactionQuery;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.entities.TransactionEntity;
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.interfaces.ITransactionJpaRepository;
@@ -19,7 +20,7 @@ public class TransactionQuery implements ITransactionQuery {
     @Override
     public TransactionEntity getById(Long id) {
         return repository.findByIdAndActiveTrue(id)
-                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+                .orElseThrow(() -> new DatabaseException("Transaction not found"));
     }
 
     @Override

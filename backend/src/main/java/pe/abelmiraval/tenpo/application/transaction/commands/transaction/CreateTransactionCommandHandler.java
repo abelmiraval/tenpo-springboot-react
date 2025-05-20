@@ -9,10 +9,8 @@ import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.entities.Trans
 import pe.abelmiraval.tenpo.infraestructure.data.repositories.jpa.TransactionRepository;
 import pe.abelmiraval.tenpo.infraestructure.shared.mediator.Handler;
 
-import java.util.UUID;
-
 @Component
-public class CreateTransactionCommandHandler implements Handler<CreateTransactionCommand, UUID> {
+public class CreateTransactionCommandHandler implements Handler<CreateTransactionCommand, Boolean> {
 
     private final TransactionQuery query;
     private final TransactionRepository repository;
@@ -23,7 +21,7 @@ public class CreateTransactionCommandHandler implements Handler<CreateTransactio
     }
 
     @Override
-    public ResponseEntity<UUID> handle(CreateTransactionCommand request){
+    public ResponseEntity<Boolean> handle(CreateTransactionCommand request){
 
         var count = query.countByUsername(request.username());
 
@@ -34,10 +32,11 @@ public class CreateTransactionCommandHandler implements Handler<CreateTransactio
         var entity = new TransactionEntity(
                 request.amount(),
                 request.category(),
-                request.username()
+                request.username(),
+                request.date()
         );
         repository.save(entity);
 
-        return new ResponseEntity<>(UUID.randomUUID(), HttpStatus.CREATED);
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.CREATED);
     }
 }

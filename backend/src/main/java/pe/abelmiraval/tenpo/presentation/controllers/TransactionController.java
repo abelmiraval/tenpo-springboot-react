@@ -17,7 +17,6 @@ import pe.abelmiraval.tenpo.infraestructure.swagger.PostApiResponse;
 import pe.abelmiraval.tenpo.infraestructure.swagger.PutApiResponse;
 
 import java.util.List;
-import java.util.UUID;
 
 @Tag(name = "Transaction", description = "Transaction API")
 @RestController
@@ -49,8 +48,8 @@ public class TransactionController {
     @Operation(summary = "Save")
     @PostApiResponse
     @PostMapping()
-    public ResponseEntity<UUID> save(@RequestBody @Valid final CreateTransactionCommand request) {
-        return mediator.handle(request, UUID.class);
+    public ResponseEntity<Boolean> save(@RequestBody @Valid final CreateTransactionCommand request) {
+        return mediator.handle(request, Boolean.class);
     }
 
     @Operation(summary = "Update")
