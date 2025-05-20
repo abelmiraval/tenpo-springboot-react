@@ -19,7 +19,7 @@ public class DeleteTransactionCommandHandler implements CommandHandler<DeleteTra
     @Override
     public Boolean handle(DeleteTransactionCommand request) {
 
-        var entity = query.getById(request.getId());
+        var entity = query.getById(request.id());
 
         if (entity.isEmpty()) {
             return false;

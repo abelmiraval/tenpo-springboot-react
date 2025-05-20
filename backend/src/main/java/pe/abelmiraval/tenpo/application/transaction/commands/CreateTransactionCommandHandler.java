@@ -22,17 +22,17 @@ public class CreateTransactionCommandHandler implements CommandHandler<CreateTra
     @Override
     public Boolean handle(CreateTransactionCommand request) {
 
-        var count = query.countByUsername(request.getUsername());
+        var count = query.countByUsername(request.username());
 
         if (count >= Constants.MAX_TRANSACTION_COUNT) {
             throw new BusinessException("amount", "El Tenpista ya tiene el máximo de 100 transacciones.");
         }
 
         var entity = new TransactionEntity(
-                request.getAmount(),
-                request.getCategory(),
-                request.getUsername(),
-                request.getDate()
+                request.amount(),
+                request.category(),
+                request.username(),
+                request.date()
         );
         repository.save(entity);
 

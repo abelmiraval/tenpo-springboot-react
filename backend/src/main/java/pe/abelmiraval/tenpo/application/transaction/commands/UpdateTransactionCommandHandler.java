@@ -18,16 +18,16 @@ public class UpdateTransactionCommandHandler implements CommandHandler<UpdateTra
 
     @Override
     public Boolean handle(UpdateTransactionCommand request) {
-        var optional = query.getById(request.getId());
+        var optional = query.getById(request.id());
 
         if (optional.isEmpty()) {
             return false;
         }
 
         var transaction = optional.get();
-        transaction.setAmount(request.getAmount());
-        transaction.setCategory(request.getCategory());
-        transaction.setUsername(request.getUsername());
+        transaction.setAmount(request.amount());
+        transaction.setCategory(request.category());
+        transaction.setUsername(request.username());
 
         repository.update(transaction);
 
