@@ -6,6 +6,8 @@ import pe.abelmiraval.tenpo.infraestructure.shared.cqrs.HandledBy;
 import pe.abelmiraval.tenpo.infraestructure.shared.cqrs.command.Command;
 
 @HandledBy(handler = UpdateTransactionCommandHandler.class)
-public record UpdateTransactionCommand(Long id, @Min(value = 0, message = "El monto debe ser mayor o igual a 0") Integer amount,
-                                       @NotBlank(message = "La categoría es obligatoria") String category, String username) implements Command<Boolean> {
+public record UpdateTransactionCommand(Long id,
+                                       @Min(value = 0, message = "El monto debe ser mayor o igual a 0") Integer amount,
+                                       @NotBlank(message = "La categoría es obligatoria") String category,
+                                       @NotBlank(message = "El usuario es obligatorio") String username) implements Command<Boolean> {
 }
