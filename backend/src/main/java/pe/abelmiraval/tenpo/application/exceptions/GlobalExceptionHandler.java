@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice(basePackages = "pe.abelmiraval.tenpo")
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger("ErrorGlobalExceptionHandler");
+    private static final Logger logger = LoggerFactory.getLogger("GlobalExceptionHandler");
     private static final String LOG_DETAILS = "Detail: {} ";
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
