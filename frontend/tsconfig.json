@@ -8,6 +8,9 @@
     "./src/**/*"
   ],
   "compilerOptions": {
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./dist/types",
     "strict": true,
     "esModuleInterop": true,
     "lib": [
