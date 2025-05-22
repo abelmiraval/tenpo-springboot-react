@@ -28,6 +28,7 @@ public class UpdateTransactionCommandHandler implements CommandHandler<UpdateTra
         transaction.setAmount(request.amount());
         transaction.setCategory(request.category());
         transaction.setUsername(request.username());
+        transaction.setDate(request.date());
 
         repository.update(transaction);
 

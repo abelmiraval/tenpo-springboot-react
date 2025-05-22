@@ -35,7 +35,7 @@ class TransactionControllerTest {
     @Test
     void testGetById_WhenFound() {
         var id = 1L;
-        var responseMock = new GetByIdTransactionResponse(1L,20, new Date());
+        var responseMock = new GetByIdTransactionResponse(1L,20, "deposit","abelmiraval", new Date());
         when(mediator.dispatch(any(GetByIdTransactionQuery.class))).thenReturn(responseMock);
 
         ResponseEntity<BaseResponse<GetByIdTransactionResponse>> response = controller.getById(id);
@@ -94,7 +94,7 @@ class TransactionControllerTest {
 
     @Test
     void testUpdate_WhenSuccess() {
-        UpdateTransactionCommand command = new UpdateTransactionCommand(1L,20,"deposit","abelmiraval"); // set fields as needed
+        UpdateTransactionCommand command = new UpdateTransactionCommand(1L,20,"deposit","abelmiraval", new Date()); // set fields as needed
         when(mediator.dispatch(command)).thenReturn(true);
 
         var response = controller.update(command);
@@ -105,7 +105,7 @@ class TransactionControllerTest {
 
     @Test
     void testUpdate_WhenNotFound() {
-        UpdateTransactionCommand command = new UpdateTransactionCommand(1L,20,"deposit","abelmiraval"); // set fields as needed
+        UpdateTransactionCommand command = new UpdateTransactionCommand(1L,20,"deposit","abelmiraval", new Date()); // set fields as needed
         when(mediator.dispatch(command)).thenReturn(false);
 
         var response = controller.update(command);

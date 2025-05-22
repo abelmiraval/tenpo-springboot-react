@@ -31,7 +31,7 @@ class UpdateTransactionCommandHandlerTest {
     void handle_ShouldUpdateTransaction_WhenExists() {
         // Arrange
         UpdateTransactionCommand command = new UpdateTransactionCommand(
-                1L, 150, "health", "john_doe"
+                1L, 150, "health", "john_doe", new Date()
         );
 
         TransactionEntity existingEntity = new TransactionEntity();
@@ -59,7 +59,7 @@ class UpdateTransactionCommandHandlerTest {
     void handle_ShouldReturnFalse_WhenTransactionDoesNotExist() {
         // Arrange
         UpdateTransactionCommand command = new UpdateTransactionCommand(
-                99L, 200, "travel", "jane_doe"
+                99L, 200, "travel", "jane_doe", new Date()
         );
 
         when(query.getById(99L)).thenReturn(Optional.empty());
