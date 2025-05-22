@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  database:
+    build:
+      context: .
+      dockerfile: docker/postgres.dockerfile
+    container_name: tenpo-database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-tenpo_db}
+      POSTGRES_USER: ${DB_USER:-tenpo_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-tenpo_password}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init-scripts:/docker-entrypoint-initdb.d
+      - ./database/backups:/backups
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - tenpo-network
+
+  # Backend Spring Boot
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.dockerfile
+    container_name: tenpo-backend
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${DB_NAME:-tenpo_db}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-tenpo_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-tenpo_password}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx1024m}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    networks:
+      - tenpo-network
+    volumes:
+      - backend_logs:/app/logs
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.dockerfile
+    container_name: tenpo-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    networks:
+      - tenpo-network
+
+  # Nginx Load Balancer
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx.dockerfile
+    container_name: tenpo-nginx
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - tenpo-network
+    volumes:
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+
+volumes:
+  postgres_data:
+    driver: local
+  backend_logs:
+    driver: local
+
+networks:
+  tenpo-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
