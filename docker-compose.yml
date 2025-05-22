@@ -58,6 +58,24 @@ services:
     networks:
       - tenpo-network
 
+  # Nginx Load Balancer
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx.dockerfile
+    container_name: tenpo-nginx
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - tenpo-network
+    volumes:
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+
 volumes:
   postgres_data:
     driver: local
