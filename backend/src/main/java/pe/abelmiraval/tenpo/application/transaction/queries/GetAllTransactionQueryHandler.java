@@ -18,7 +18,7 @@ public class GetAllTransactionQueryHandler implements QueryHandler<GetAllTransac
     @Override
     public List<GetAllTransactionResponse> handle(GetAllTransactionQuery query) {
         return this.query.getAll().stream()
-                .map(t -> new GetAllTransactionResponse(t.getId(), t.getAmount(), t.getDate()))
+                .map(t -> new GetAllTransactionResponse(t.getId(), t.getAmount(),t.getCategory(),t.getUsername(), t.getDate()))
                 .toList();
     }
 

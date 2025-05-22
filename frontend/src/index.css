@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+#nprogress .bar {
+  background: #00BFA5 !important;
+  height: 3px !important;
+}
+
+#nprogress .spinner .spinner-icon {
+  width: 22px;
+  height: 22px;
+  border-top-color: #00BFA5 !important;
+  border-left-color: #00BFA5 !important;
+}
+
+#nprogress .spinner {
+  top: 15px;
+  left: 15px !important;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #F5F5F5;
+}
