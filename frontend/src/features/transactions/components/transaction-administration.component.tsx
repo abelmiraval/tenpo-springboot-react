@@ -3,6 +3,7 @@ import TransactionTable from './transaction-table.component';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {TransactionProvider} from "../context/transaction.provider.tsx";
+import TransactionForm from './transaction-form.component.tsx';
 
 const TransactionList: React.FC = () => {
     return (
@@ -13,7 +14,7 @@ const TransactionList: React.FC = () => {
                 </h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/*<TransactionForm />*/}
+                    <TransactionForm />
                     <TransactionTable />
                 </div>
 

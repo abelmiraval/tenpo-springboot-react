@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Edit2, Trash2} from 'lucide-react';
-import {formatCurrency, formatDate} from '../../../utils/formatters';
+import {formatCurrency, formatDateToLocal} from '../../../utils/formatters';
 import Card from "../../../components/common/card/card.component";
 import TransactionFilter from './transaction-filter.component';
 import useTransaction from "../hooks/useTransaction";
@@ -68,7 +68,7 @@ const TransactionTable: React.FC = () => {
                                         {formatCurrency(transaction.amount)}
                                     </td>
                                     <td className="py-2 px-4 text-tenpo-neutral-600">{transaction.category}</td>
-                                    <td className="py-2 px-4 text-tenpo-neutral-600">{formatDate(transaction.date)}</td>
+                                    <td className="py-2 px-4 text-tenpo-neutral-600">{formatDateToLocal(transaction.date)}</td>
                                     <td className="py-2 px-4">
                                         <div className="flex justify-center gap-2">
                                             <button

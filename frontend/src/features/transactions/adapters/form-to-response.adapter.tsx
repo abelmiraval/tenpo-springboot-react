@@ -1,3 +1,4 @@
+import {formatDateForInput} from "../../../utils/formatters";
 import type {TransactionForm, TransactionResponse} from "../models/transaction.model";
 
 export default function responseToFormAdapter(response: TransactionResponse): TransactionForm {
@@ -6,7 +7,7 @@ export default function responseToFormAdapter(response: TransactionResponse): Tr
     return {
         id: id || 0,
         amount: amount,
-        date: date,
+        date: formatDateForInput(date),
         category,
         username,
     };

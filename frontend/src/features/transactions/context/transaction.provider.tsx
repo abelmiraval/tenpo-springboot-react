@@ -1,5 +1,5 @@
 import {type ReactNode, useCallback, useEffect, useReducer, useState} from "react";
-import {initialState, transactionReducer, type TransactionErrors} from "./transaction.reducer.ts";
+import {initialState, transactionReducer} from "./transaction.reducer.ts";
 import {TransactionContext} from "./transaction.context.tsx";
 import {toast} from "react-toastify";
 import {transactionService} from "../services/transaction.service.tsx";
@@ -49,9 +49,12 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
             await fetchTransactions();
 
             toast.success("Transaction added successfully");
+
+            return true
         } catch (error) {
             console.error("Error adding transaction:", error);
             toast.error("Failed to add transaction");
+            return false;
         } finally {
             setIsLoading(false);
         }
@@ -61,15 +64,16 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
         setIsLoading(true);
         try {
             const request = formToUpdateAdapter(transaction);
-            await transactionService.update(request.id, request);
+            await transactionService.update(request);
             dispatch({type: 'UPDATE_TRANSACTION'});
 
             await fetchTransactions();
-
             toast.success("Transaction updated successfully");
+            return true;
         } catch (error) {
             console.error("Error updating transaction:", error);
             toast.error("Failed to update transaction");
+            return false;
         } finally {
             setIsLoading(false);
         }
@@ -84,9 +88,11 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
             await fetchTransactions();
 
             toast.success("Transaction deleted successfully");
+            return true;
         } catch (error) {
             console.error("Error deleting transaction:", error);
             toast.error("Failed to delete transaction");
+            return false;
         } finally {
             setIsLoading(false);
         }
@@ -111,29 +117,6 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
         dispatch({type: 'RESET_FORM'});
     };
 
-    const validateForm = (transaction: Partial<TransactionForm>): TransactionErrors => {
-        const errors: TransactionErrors = {};
-
-        if (!transaction.amount && transaction.amount !== 0) {
-            errors.amount = 'Amount is required';
-        } else if (isNaN(Number(transaction.amount))) {
-            errors.amount = 'Amount must be a number';
-        }
-
-        if (!transaction.category) {
-            errors.category = 'Category is required';
-        }
-
-        if (!transaction.username) {
-            errors.username = 'Username is required';
-        }
-
-        if (!transaction.date) {
-            errors.date = 'Date is required';
-        }
-
-        return errors;
-    };
 
     return (
         <TransactionContext.Provider
@@ -145,10 +128,9 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
                 addTransaction,
                 updateTransaction,
                 deleteTransaction,
-                resetForm,
                 setEditingTransaction,
                 filterByCategory,
-                validateForm
+                resetForm
             }}
         >
             {children}

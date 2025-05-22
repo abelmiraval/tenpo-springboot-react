@@ -19,8 +19,8 @@ export const transactionService = {
         return data;
     },
 
-    async update(id: number, transaction: UpdateTransaction): Promise<BaseResponse<boolean>> {
-        const { data } = await axios.put<BaseResponse<boolean>>(`${RESOURCE}/${id}`, transaction);
+    async update(transaction: UpdateTransaction): Promise<BaseResponse<boolean>> {
+        const { data } = await axios.put<BaseResponse<boolean>>(RESOURCE, transaction);
         return data;
     },
 

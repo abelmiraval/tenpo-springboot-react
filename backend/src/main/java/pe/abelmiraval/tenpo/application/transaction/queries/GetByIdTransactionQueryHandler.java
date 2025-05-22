@@ -15,7 +15,7 @@ public class GetByIdTransactionQueryHandler implements QueryHandler<GetByIdTrans
 
     @Override
     public GetByIdTransactionResponse handle(GetByIdTransactionQuery query) {
-        return this.query.getById(query.getId()).map(t -> new GetByIdTransactionResponse(t.getId(), t.getAmount(), t.getDate())).orElse(null);
+        return this.query.getById(query.getId()).map(t -> new GetByIdTransactionResponse(t.getId(), t.getAmount(),t.getCategory(),t.getUsername(), t.getDate())).orElse(null);
     }
 
 }

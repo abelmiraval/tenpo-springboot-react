@@ -3,38 +3,21 @@ import type {TransactionForm, TransactionResponse} from "../models/transaction.m
 export interface TransactionState {
     transactions: TransactionResponse[];
     filteredTransactions: TransactionResponse[];
-    currentTransaction: Partial<TransactionForm>;
     isEditing: boolean;
     editingTransaction: TransactionForm | null;
-    selectedCategory: string;
     filterCategory: string;
     isLoading: boolean;
-    formErrors: TransactionErrors;
 }
 
 export const initialState: TransactionState = {
     transactions: [],
     filteredTransactions: [],
-    currentTransaction: {
-        amount: 0,
-        category: '',
-        username: '',
-        date: new Date().toISOString().split('T')[0]
-    },
     isEditing: false,
     editingTransaction: null,
-    selectedCategory: '',
     filterCategory: '',
     isLoading: false,
-    formErrors: {},
 };
 
-export interface TransactionErrors {
-    amount?: string;
-    category?: string;
-    username?: string;
-    date?: string;
-}
 
 type TransactionAction =
     | { type: 'SET_TRANSACTIONS'; payload: TransactionResponse[] }
@@ -44,7 +27,6 @@ type TransactionAction =
     | { type: 'SET_EDITING_TRANSACTION'; payload: TransactionForm }
     | { type: 'FILTER_BY_CATEGORY'; payload: string }
     | { type: 'RESET_FORM' }
-    | { type: 'SET_FORM_ERRORS'; payload: TransactionErrors };
 
 export const transactionReducer = (state: TransactionState, action: TransactionAction): TransactionState => {
     switch (action.type) {
@@ -57,13 +39,11 @@ export const transactionReducer = (state: TransactionState, action: TransactionA
         case 'ADD_TRANSACTION':
             return {
                 ...state,
-                currentTransaction: initialState.currentTransaction,
                 isEditing: false
             };
         case 'UPDATE_TRANSACTION':
             return {
                 ...state,
-                currentTransaction: initialState.currentTransaction,
                 isEditing: false,
                 editingTransaction: null
             };
@@ -74,7 +54,6 @@ export const transactionReducer = (state: TransactionState, action: TransactionA
         case 'SET_EDITING_TRANSACTION':
             return {
                 ...state,
-                currentTransaction: action.payload,
                 isEditing: true,
                 editingTransaction: action.payload
             };
@@ -86,16 +65,10 @@ export const transactionReducer = (state: TransactionState, action: TransactionA
         case 'RESET_FORM':
             return {
                 ...state,
-                currentTransaction: initialState.currentTransaction,
                 isEditing: false,
                 editingTransaction: null,
-                formErrors: {}
             };
-        case 'SET_FORM_ERRORS':
-            return {
-                ...state,
-                formErrors: action.payload
-            };
+
         default:
             return state;
     }
