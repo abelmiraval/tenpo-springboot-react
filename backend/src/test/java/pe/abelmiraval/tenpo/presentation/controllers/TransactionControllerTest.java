@@ -60,7 +60,7 @@ class TransactionControllerTest {
 
     @Test
     void testGetAll() {
-        List<GetAllTransactionResponse> transactions = List.of(new GetAllTransactionResponse(1L, 20, new Date()));
+        List<GetAllTransactionResponse> transactions = List.of(new GetAllTransactionResponse(1L, 20,"deposit","abelmiraval", new Date()));
         when(mediator.dispatch(any(GetAllTransactionQuery.class))).thenReturn(transactions);
 
         var response = controller.getAll();
