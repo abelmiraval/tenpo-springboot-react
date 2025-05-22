@@ -13,17 +13,18 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
 }
 
-export default function Button({
-                                   children,
-                                   type = 'button',
-                                   variant = 'primary',
-                                   size = 'md',
-                                   fullWidth = false,
-                                   disabled = false,
-                                   className = '',
-                                   onClick,
-                                   ...props
-                               }: ButtonProps) {
+export default function Button(
+    {
+        children,
+        type = 'button',
+        variant = 'primary',
+        size = 'md',
+        fullWidth = false,
+        disabled = false,
+        className = '',
+        onClick,
+        ...props
+    }: ButtonProps) {
     const baseClasses =
         'font-medium transition duration-300 rounded focus:outline-none focus:ring-2';
 
