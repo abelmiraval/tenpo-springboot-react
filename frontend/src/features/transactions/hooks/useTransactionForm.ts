@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { TransactionContext } from "../context/transaction.context";
+import {useContext, useEffect, useState} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {TransactionContext} from "../context/transaction.context";
 import {
     transactionSchema,
     updateTransactionSchema,
@@ -9,7 +9,7 @@ import {
     type UpdateTransactionFormData,
     TRANSACTION_CATEGORIES
 } from "../schemas/transaction.schema";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 const useTransactionForm = () => {
     const {
@@ -20,10 +20,7 @@ const useTransactionForm = () => {
     } = useContext(TransactionContext);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // Determinar si estamos editando
     const isEditing = state.isEditing && state.editingTransaction;
-
-    // Configurar React Hook Form con el schema apropiado
     const form = useForm<TransactionFormData | UpdateTransactionFormData>({
         resolver: zodResolver(isEditing ? updateTransactionSchema : transactionSchema),
         defaultValues: {
@@ -32,13 +29,11 @@ const useTransactionForm = () => {
             username: "",
             date: new Date().toISOString().split('T')[0],
             description: "",
-            ...(isEditing && { id: state.editingTransaction?.id })
+            ...(isEditing && {id: state.editingTransaction?.id})
         }
     });
+    const {handleSubmit, formState: {errors}, reset, setValue, watch, getValues} = form;
 
-    const { handleSubmit, formState: { errors }, reset, setValue, watch, getValues } = form;
-
-    // Actualizar formulario cuando cambia la transacción en edición
     useEffect(() => {
         if (isEditing && state.editingTransaction) {
             const transaction = state.editingTransaction;
@@ -74,24 +69,20 @@ const useTransactionForm = () => {
             }
 
         } catch (error) {
-            console.error("Error al guardar la transacción:", error);
-            toast.error("Error al guardar la transacción");
+            console.error("Error saving the transaction:", error);
+            toast.error("Error saving the transaction");
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    // Manejar errores de validación
     const onError = (errors: any) => {
-        console.error("Errores de validación:", errors);
-        toast.error("Por favor, corrige los errores en el formulario");
+        console.error("Validation errors:", errors);
+        toast.error("Please correct the errors in the form");
     };
 
     const resetFormData = () => {
-        // 1. Resetear el estado del contexto (isEditing, editingTransaction, etc.)
         resetForm();
-
-        // 2. Resetear el formulario de react-hook-form
         reset({
             amount: 0,
             category: "",
@@ -106,23 +97,16 @@ const useTransactionForm = () => {
     };
 
     return {
-        // Form methods
         handleSubmit: handleSubmit(onSubmit, onError),
         errors,
         reset,
         setValue,
         watch,
         getValues,
-
-        // Estados
         isEditing,
         isSubmitting,
         isLoading: state.isLoading || isSubmitting,
-
-        // Categorías estáticas
         categories: TRANSACTION_CATEGORIES,
-
-        // Acciones
         resetFormData,
         cancelEdit,
 
