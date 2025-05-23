@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
         }
 
         if (status === 429) {
-            alert('Mucho intentos, por favor espera un momento.');
+            alert('Muchos intentos, por favor espera un momento.');
         }
 
         return Promise.reject(error);
