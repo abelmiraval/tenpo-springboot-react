@@ -58,6 +58,11 @@ volumes:
 
 ```
 
+- Ejecutar comando
+```bash
+docker-compose up --build
+```
+
 ## Ejecutar la Aplicación Local
 
 
@@ -131,7 +136,7 @@ sudo lsof -i :5432
 ![Component Diagram](docs/clean-architecture.png)
 
 
-### Diagrama de secuencia 
+### Diagrama de secuencia
 
 ### Crear transacción
 ![Sequence Diagram](docs/transaction/create-transaction.png)

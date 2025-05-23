@@ -62,10 +62,6 @@ public class TransactionController {
         return ResponseEntity.ok(new BaseResponse<>(response, SUCCESS, true, Collections.emptyList()));
     }
 
-    @RateLimiters({
-            @RateLimiter(timeUnit = TimeUnit.SECONDS, timeValue = 10, restriction = 2),
-            @RateLimiter(timeValue = 10, restriction = 5)
-    })
     @Operation(summary = "Save")
     @PostApiResponse
     @PostMapping()

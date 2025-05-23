@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import pe.abelmiraval.tenpo.application.wrapper.BaseResponse;
 import pe.abelmiraval.tenpo.domain.constants.Message;
+import pe.abelmiraval.tenpo.infraestructure.config.ratelimit.RateLimiterHeader;
+import pe.abelmiraval.tenpo.infraestructure.exceptions.BucketRateLimiterException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -113,6 +116,18 @@ public class GlobalExceptionHandler {
 
         logger.info(LOG_DETAILS, baseResponse);
         return baseResponse;
+    }
+
+    @ExceptionHandler(BucketRateLimiterException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public ResponseEntity<?> bucketRateLimiterExceptionHandler(BucketRateLimiterException exception){
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .headers(httpHeaders ->  {
+                    httpHeaders.set(RateLimiterHeader.RATE_LIMITER_WAIT_FOR_REFILL.name, String.valueOf(exception.getConsumptionProbe().getNanosToWaitForRefill()));
+                    httpHeaders.set(RateLimiterHeader.RATE_LIMITER_RESET.name, String.valueOf(exception.getConsumptionProbe().getNanosToWaitForReset()));
+                    httpHeaders.set(RateLimiterHeader.RATE_LIMITER_REMAINING.name, String.valueOf(exception.getConsumptionProbe().getRemainingTokens()));
+                })
+                .body(exception.getMessage());
     }
 
 }

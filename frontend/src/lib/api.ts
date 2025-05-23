@@ -28,6 +28,10 @@ axiosInstance.interceptors.response.use(
             alert('Error del servidor. Inténtalo más tarde.');
         }
 
+        if (status === 429) {
+            alert('Mucho intentos, por favor espera un momento.');
+        }
+
         return Promise.reject(error);
     }
 );
