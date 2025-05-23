@@ -72,7 +72,7 @@ docker-compose up --build
 docker-compose up --build
 ```
 
-### Opción 3: Paso a Paso
+### Opción 2: Paso a Paso
 ```bash
 # 1. Construir imágenes
 docker-compose build
