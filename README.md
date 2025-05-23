@@ -112,6 +112,34 @@ curl http://localhost:8080/api/health
 curl http://localhost:3000
 ```
 
+Ejecutar `GetById`
+```bash
+curl -v http://localhost:8080/api/v1/transactions/1
+```
+
+Ejecutar `GetAll`
+````bash
+curl -v http://localhost:8080/api/v1/transactions
+```
+
+Ejecutar `Save`
+```bash
+curl -v -X POST http://localhost:8080/api/v1/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 100, "category": "food", "username": "abelmiraval", "date": "2025-05-23"}'
+```
+
+Ejecutar `Update`
+curl -v -X PUT http://localhost:8080/api/v1/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"id": "1", "amount": 100, "category": "food", "username": "abelmiraval", "date": "2025-05-23"}'
+
+Ejecutar `Delete`
+```bash
+curl -v -X DELETE http://localhost:8080/api/v1/transactions/2
+```
+
+
 ## Estructura de Servicios
 - **database**: PostgreSQL 15
 - **backend**: Spring Boot (Java 21)
