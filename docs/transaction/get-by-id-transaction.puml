@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+skinparam sequenceArrowThickness 2
+
+title Flujo de Obtener Transacción
+
+actor Actor #lightblue
+participant API #lightgreen
+participant TransactionController #lightyellow
+participant GetByIdTransactionQueryHandler #lightcoral
+participant TransactionQuery #lightcyan
+database BaseDatos #lightgray
+
+Actor -[#blue]> API: Obtener transacción
+API -[#green]> TransactionController: POST /api/v1/transactions/{id}
+TransactionController -[#orange]> GetByIdTransactionQueryHandler: dispatch(GetByIdTransactionQuery)
+GetByIdTransactionQueryHandler -[#red]> TransactionQuery: getById({id})
+TransactionQuery -[#purple]> BaseDatos: findByIdAndActiveTrue({id})
+BaseDatos --[#purple]> TransactionQuery: Transaction
+TransactionQuery --[#red]> GetByIdTransactionQueryHandler: Transaction
+GetByIdTransactionQueryHandler --[#orange]> TransactionController: BaseResponse<GetByIdTransactionResponse>
+TransactionController --[#green]> API: BaseResponse<GetByIdTransactionResponse>
+API --[#blue]> Actor: Muestra transacción
+
+@enduml

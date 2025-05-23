@@ -1,0 +1,101 @@
+@startuml
+!theme aws-orange
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 80
+skinparam shadowing true
+skinparam roundcorner 10
+
+' Configuración de colores
+skinparam package {
+    BackgroundColor<<presentation>> #E8F4FD
+    BorderColor<<presentation>> #2196F3
+    BackgroundColor<<application>> #F3E5F5
+    BorderColor<<application>> #9C27B0
+    BackgroundColor<<domain>> #FFF3E0
+    BorderColor<<domain>> #FF9800
+    BackgroundColor<<infrastructure>> #E8F5E8
+    BorderColor<<infrastructure>> #4CAF50
+    BackgroundColor<<resources>> #FFEBEE
+    BorderColor<<resources>> #F44336
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #666666
+    FontSize 11
+    FontColor #333333
+}
+
+title <size:16><color:#2c3e50><b> Arquitectura del Proyecto Backend - Tenpo Application</b></color></size>
+
+package "Backend Project" {
+
+    package "Presentation Layer" <<presentation>> {
+        package "controllers" as ctrl {
+            component [TransactionController.java] as transCtrl
+            component [TempoApplication.java] as mainApp
+        }
+    }
+
+    package "Application Layer" <<application>> {
+        package "application" as app {
+            component [behaviors] as behaviors
+            component [exceptions] as appExceptions
+            component [transaction] as transaction
+            component [wrapper] as wrapper
+        }
+    }
+
+    package "Domain Layer" <<domain>> {
+        package "domain" as dom {
+            component [constants] as constants
+            component [enums] as enums
+            component [exceptions] as domExceptions
+            component [repositories] as repositories
+            component [shared] as domShared
+        }
+    }
+
+    package "Infrastructure Layer" <<infrastructure>> {
+        package "infrastructure" as infra {
+            component [config] as config
+            component [data] as data
+            component [exceptions] as infraExceptions
+            component [services] as services
+            component [shared] as infraShared
+            component [swagger] as swagger
+        }
+    }
+
+}
+
+' Relaciones principales entre capas con colores
+ctrl -[#2196F3,thickness=3]-> app : <color:#2196F3><b>Uses</b></color>
+app -[#9C27B0,thickness=3]-> dom : <color:#9C27B0><b>Uses</b></color>
+infra -[#4CAF50,thickness=3]-> dom : <color:#4CAF50><b>Implements</b></color>
+ctrl -[#FF5722,thickness=2]-> infra : <color:#FF5722><b>Configures</b></color>
+
+' Relaciones específicas con estilos mejorados
+transCtrl .[#E91E63,thickness=2].> transaction : <color:#E91E63>Controls</color>
+mainApp .[#3F51B5,thickness=2].> config : <color:#3F51B5>Configures</color>
+repositories <.[#009688,thickness=2].. data : <color:#009688>Implements</color>
+services -[#795548,thickness=2]-> dom : <color:#795548>Uses</color>
+
+' Notas mejoradas con colores
+note right of ctrl : <color:#2196F3><b>Presentation Layer</b></color>\n• Controllers REST\n• Punto de entrada HTTP\n• Validación de entrada\n• Serialización/Deserialización
+note right of app : <color:#9C27B0><b>Application Layer</b></color>\n• Casos de uso\n• Orquestación de servicios\n• Lógica de aplicación\n• Manejo de transacciones
+note right of dom : <color:#FF9800><b>Domain Layer</b></color>\n• Entidades de negocio\n• Reglas de dominio\n• Interfaces de repositorio\n• Objetos de valor
+note right of infra : <color:#4CAF50><b>Infrastructure Layer</b></color>\n• Implementación de datos\n• Servicios externos\n• Configuración técnica\n• Adaptadores
+
+' Leyenda
+legend bottom right
+|<color:#2196F3></color>| Presentation Layer |
+|<color:#9C27B0></color>| Application Layer |
+|<color:#FF9800>️</color>| Domain Layer |
+|<color:#4CAF50></color>| Infrastructure Layer |
+|<color:#F44336></color>| Resources & Tests |
+endlegend
+
+@enduml

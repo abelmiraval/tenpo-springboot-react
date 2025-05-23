@@ -1,4 +1,11 @@
-# 🚀 Tenpo Challenge - Ejecución con Docker
+
+<div align="center">
+
+  <img src="https://cdn.prod.website-files.com/647f4d1c528358bdb9d8ef3e/64e3a0a372c75160c61be423_tenpo.svg" alt="logo" width="200" height="auto" />
+  <h1>Tenpo Challenge - Ejecución con Docker</h1>
+</div>
+
+<br />
 
 ## Requisitos Previos
 - Docker
@@ -115,3 +122,19 @@ sudo lsof -i :5432
 
 # Detener servicios que usen esos puertos
 ```
+
+
+## Diagrama de software
+
+### Diagrama de componentes
+
+![Component Diagram](docs/clean-architecture.png)
+
+
+### Diagrama de secuencia 
+
+### Crear transacción
+![Sequence Diagram](docs/transaction/create-transaction.png)
+
+### Obtener transaccion
+![Sequence Diagram](docs/transaction/get-by-id-transaction.png)

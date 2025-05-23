@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+skinparam sequenceArrowThickness 2
+
+title Flujo de Creación de Transacción
+
+actor Actor #lightblue
+participant API #lightgreen
+participant TransactionController #lightyellow
+participant CreateTransactionCommandHandler #lightcoral
+participant TransactionRepository #lightcyan
+database BaseDatos #lightgray
+
+Actor -[#blue]> API: Crear transacción
+API -[#green]> TransactionController: POST /api/v1/transactions/
+TransactionController -[#orange]> CreateTransactionCommandHandler: dispatch(CreateTransactionCommand)
+CreateTransactionCommandHandler -[#red]> TransactionRepository: save(Transaction)
+TransactionRepository -[#purple]> BaseDatos: save(Transaction)
+BaseDatos --[#purple]> TransactionRepository: true
+TransactionRepository --[#red]> CreateTransactionCommandHandler: true
+CreateTransactionCommandHandler --[#orange]> TransactionController: BaseResponse<boolean>
+TransactionController --[#green]> API: BaseResponse<boolean>
+API --[#blue]> Actor: Muestra mensaje de éxito
+
+@enduml
