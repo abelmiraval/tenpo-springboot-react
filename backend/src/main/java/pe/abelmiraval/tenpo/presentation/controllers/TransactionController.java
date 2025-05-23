@@ -38,10 +38,6 @@ public class TransactionController {
         this.mediator = mediator;
     }
 
-    @RateLimiters({
-            @RateLimiter(timeUnit = TimeUnit.SECONDS, timeValue = 10, restriction = 2),
-            @RateLimiter(timeValue = 10, restriction = 5)
-    })
     @Operation(summary = "Get By Id")
     @GetApiResponse
     @GetMapping("/{id}")
@@ -66,6 +62,10 @@ public class TransactionController {
         return ResponseEntity.ok(new BaseResponse<>(response, SUCCESS, true, Collections.emptyList()));
     }
 
+    @RateLimiters({
+            @RateLimiter(timeUnit = TimeUnit.SECONDS, timeValue = 10, restriction = 2),
+            @RateLimiter(timeValue = 10, restriction = 5)
+    })
     @Operation(summary = "Save")
     @PostApiResponse
     @PostMapping()
@@ -77,6 +77,10 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Boolean.FALSE);
     }
 
+    @RateLimiters({
+            @RateLimiter(timeUnit = TimeUnit.SECONDS, timeValue = 10, restriction = 2),
+            @RateLimiter(timeValue = 10, restriction = 5)
+    })
     @Operation(summary = "Update")
     @PutApiResponse
     @PutMapping()
