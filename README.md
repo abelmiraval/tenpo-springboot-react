@@ -118,7 +118,7 @@ curl -v http://localhost:8080/api/v1/transactions/1
 ```
 
 Ejecutar `GetAll`
-````bash
+```bash
 curl -v http://localhost:8080/api/v1/transactions
 ```
 
