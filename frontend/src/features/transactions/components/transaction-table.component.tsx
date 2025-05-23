@@ -6,27 +6,27 @@ import TransactionFilter from './transaction-filter.component';
 import useTransaction from "../hooks/useTransaction";
 import {TransactionContext} from "../context/transaction.context.tsx";
 import useTransactionFilter from "../hooks/useTransactionFilter";
+import useTransactionForm from "../hooks/useTransactionForm";
 
 const TransactionTable: React.FC = () => {
     const {
         totalBalance,
         isLoading
     } = useTransaction();
-
     const {filteredTransactions} = useTransactionFilter()
+    const {handleDelete} = useTransactionForm();
+    const {setEditingTransaction} = useContext(TransactionContext);
 
-    const {deleteTransaction, setEditingTransaction} = useContext(TransactionContext);
-
-    const handleEdit = async (transactionId: number) => {
+    const onClickEdit = async (transactionId: number) => {
         const transaction = filteredTransactions.find(t => t.id === transactionId);
         if (transaction) {
             await setEditingTransaction(transaction);
         }
     };
 
-    const handleDelete = async (id: number) => {
+    const onClickDelete = async (id: number) => {
         if (window.confirm("Are you sure you want to delete this transaction?")) {
-            await deleteTransaction(id);
+            await handleDelete(id);
         }
     };
 
@@ -58,6 +58,7 @@ const TransactionTable: React.FC = () => {
                                 <th className="py-2 px-4 text-left text-tenpo-neutral-800">Amount</th>
                                 <th className="py-2 px-4 text-left text-tenpo-neutral-800">Category</th>
                                 <th className="py-2 px-4 text-left text-tenpo-neutral-800">Date</th>
+                                <th className="py-2 px-4 text-left text-tenpo-neutral-800">User</th>
                                 <th className="py-2 px-4 text-center text-tenpo-neutral-800">Action</th>
                             </tr>
                             </thead>
@@ -69,17 +70,18 @@ const TransactionTable: React.FC = () => {
                                     </td>
                                     <td className="py-2 px-4 text-tenpo-neutral-600">{transaction.category}</td>
                                     <td className="py-2 px-4 text-tenpo-neutral-600">{formatDateToLocal(transaction.date)}</td>
+                                    <td className="py-2 px-4 text-tenpo-neutral-600">{transaction.username}</td>
                                     <td className="py-2 px-4">
                                         <div className="flex justify-center gap-2">
                                             <button
-                                                onClick={() => handleEdit(transaction.id)}
+                                                onClick={() => onClickEdit(transaction.id)}
                                                 disabled={isLoading}
                                                 className="p-2 rounded-md text-tenpo-secondary hover:bg-tenpo-secondary hover:text-white transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 <Edit2 size={16}/>
                                             </button>
                                             <button
-                                                onClick={() => handleDelete(transaction.id)}
+                                                onClick={() => onClickDelete(transaction.id)}
                                                 disabled={isLoading}
                                                 className="p-2 rounded-md text-tenpo-error hover:bg-tenpo-error hover:text-white transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                             >

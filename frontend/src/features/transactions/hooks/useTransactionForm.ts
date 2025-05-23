@@ -16,11 +16,13 @@ const useTransactionForm = () => {
         state,
         addTransaction,
         updateTransaction,
+        deleteTransaction,
         resetForm,
     } = useContext(TransactionContext);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const isEditing = state.isEditing && state.editingTransaction;
+
     const form = useForm<TransactionFormData | UpdateTransactionFormData>({
         resolver: zodResolver(isEditing ? updateTransactionSchema : transactionSchema),
         defaultValues: {
@@ -32,6 +34,7 @@ const useTransactionForm = () => {
             ...(isEditing && {id: state.editingTransaction?.id})
         }
     });
+
     const {handleSubmit, formState: {errors}, reset, setValue, watch, getValues} = form;
 
     useEffect(() => {
@@ -43,6 +46,14 @@ const useTransactionForm = () => {
                 username: transaction.username || "",
                 date: transaction.date || new Date().toISOString().split('T')[0],
                 id: transaction.id
+            });
+        } else if (!isEditing) {
+            reset({
+                amount: 0,
+                category: "",
+                username: "",
+                date: new Date().toISOString().split('T')[0],
+                description: "",
             });
         }
     }, [state.editingTransaction, state.isEditing, reset, isEditing]);
@@ -66,6 +77,7 @@ const useTransactionForm = () => {
 
             if (result) {
                 resetFormData();
+                toast.success(isEditing ? "Transaction updated successfully" : "Transaction created successfully");
             }
 
         } catch (error) {
@@ -81,6 +93,19 @@ const useTransactionForm = () => {
         toast.error("Please correct the errors in the form");
     };
 
+    const handleDelete = async (id: number) => {
+        try {
+            const result = await deleteTransaction(id);
+            if (result) {
+                resetFormData();
+                toast.success("Transaction deleted successfully");
+            }
+        } catch (error) {
+            console.error("Error deleting transaction:", error);
+            toast.error("Error deleting transaction");
+        }
+    };
+
     const resetFormData = () => {
         resetForm();
         reset({
@@ -90,7 +115,7 @@ const useTransactionForm = () => {
             date: new Date().toISOString().split('T')[0],
             description: ""
         });
-    };
+    }
 
     const cancelEdit = () => {
         resetFormData();
@@ -98,6 +123,7 @@ const useTransactionForm = () => {
 
     return {
         handleSubmit: handleSubmit(onSubmit, onError),
+        handleDelete,
         errors,
         reset,
         setValue,
@@ -109,7 +135,6 @@ const useTransactionForm = () => {
         categories: TRANSACTION_CATEGORIES,
         resetFormData,
         cancelEdit,
-
         formValues: watch()
     };
 };

@@ -48,8 +48,6 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
 
             await fetchTransactions();
 
-            toast.success("Transaction added successfully");
-
             return true
         } catch (error) {
             console.error("Error adding transaction:", error);
@@ -68,11 +66,9 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
             dispatch({type: 'UPDATE_TRANSACTION'});
 
             await fetchTransactions();
-            toast.success("Transaction updated successfully");
             return true;
         } catch (error) {
             console.error("Error updating transaction:", error);
-            toast.error("Failed to update transaction");
             return false;
         } finally {
             setIsLoading(false);
@@ -87,11 +83,9 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
 
             await fetchTransactions();
 
-            toast.success("Transaction deleted successfully");
             return true;
         } catch (error) {
             console.error("Error deleting transaction:", error);
-            toast.error("Failed to delete transaction");
             return false;
         } finally {
             setIsLoading(false);
@@ -105,7 +99,6 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({childre
             dispatch({type: 'SET_EDITING_TRANSACTION', payload: form});
         } catch (error) {
             console.error("Error getting transaction details:", error);
-            toast.error("Failed to get transaction");
         }
     };
 
