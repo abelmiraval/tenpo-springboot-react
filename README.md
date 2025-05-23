@@ -130,9 +130,11 @@ curl -v -X POST http://localhost:8080/api/v1/transactions \
 ```
 
 Ejecutar `Update`
+```bash
 curl -v -X PUT http://localhost:8080/api/v1/transactions \
   -H "Content-Type: application/json" \
   -d '{"id": "1", "amount": 100, "category": "food", "username": "abelmiraval", "date": "2025-05-23"}'
+```
 
 Ejecutar `Delete`
 ```bash
