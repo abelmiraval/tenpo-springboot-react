@@ -14,6 +14,8 @@ import pe.abelmiraval.tenpo.application.transaction.queries.GetAllTransactionRes
 import pe.abelmiraval.tenpo.application.transaction.queries.GetByIdTransactionQuery;
 import pe.abelmiraval.tenpo.application.transaction.queries.GetByIdTransactionResponse;
 import pe.abelmiraval.tenpo.application.wrapper.BaseResponse;
+import pe.abelmiraval.tenpo.infraestructure.config.ratelimit.RateLimiter;
+import pe.abelmiraval.tenpo.infraestructure.config.ratelimit.RateLimiters;
 import pe.abelmiraval.tenpo.infraestructure.shared.cqrs.dispatchable.DispatchableHandler;
 import pe.abelmiraval.tenpo.infraestructure.swagger.DeleteApiResponse;
 import pe.abelmiraval.tenpo.infraestructure.swagger.GetApiResponse;
@@ -22,6 +24,7 @@ import pe.abelmiraval.tenpo.infraestructure.swagger.PutApiResponse;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Tag(name = "Transaction", description = "Transaction API")
 @RestController
@@ -35,6 +38,10 @@ public class TransactionController {
         this.mediator = mediator;
     }
 
+    @RateLimiters({
+            @RateLimiter(timeUnit = TimeUnit.SECONDS, timeValue = 10, restriction = 2),
+            @RateLimiter(timeValue = 10, restriction = 5)
+    })
     @Operation(summary = "Get By Id")
     @GetApiResponse
     @GetMapping("/{id}")

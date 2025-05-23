@@ -22,9 +22,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydb
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypass
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tenpo_db
+      SPRING_DATASOURCE_USERNAME: tenpo_user
+      SPRING_DATASOURCE_PASSWORD: tenpo_password
     depends_on:
       - postgres
 
@@ -53,12 +53,14 @@ volumes:
 
 ## Ejecutar la Aplicación Local
 
+
 ### Opción 1: Comando Único
+
 ```bash
 docker-compose up --build
 ```
 
-### Opción 2: Paso a Paso
+### Opción 3: Paso a Paso
 ```bash
 # 1. Construir imágenes
 docker-compose build
